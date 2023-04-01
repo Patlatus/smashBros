@@ -40,14 +40,14 @@ class CommandConn(Protocol):
 		self.number = number
 
 	def connectionMade(self):
-		print 'Command connection made to SERVER, waiting for other player'
+		print('Command connection made to SERVER, waiting for other player')
 
 	def connectionLost(self, reason):
-		print 'Command connection lost from SERVER'
+		print('Command connection lost from SERVER')
 
 	def dataReceived(self, data):
 		"""Data received from server connection, this means two players have connected, so create a new DataConn"""
-		#print 'Received data, making data connection', data
+		#print('Received data, making data connection', data)
 		reactor.connectTCP(self.player.server, self.player.data_port_1, DataConnFactory(self.player, self.number))
 
 #======================================================================
@@ -67,21 +67,21 @@ class DataConn(LineReceiver):
 		self.number = number
 
 	def connectionMade(self):
-		print 'Data connection made to SERVER'
+		print('Data connection made to SERVER')
 		self.player.outgoing_data_queue.get().addCallback(self.sendToServer)
 		self.player.incoming_data_queue.get().addCallback(self.player.game.doAfterServerResponse)
 		self.player.game.main()
 
 	def connectionLost(self, reason):
-		print 'Data connection lost to HOME'
+		print('Data connection lost to HOME')
 
 	def lineReceived(self, line):
 		"""Data received from server, put it on queue"""
-		#print 'Received', line
+		#print('Received', line)
 		self.player.incoming_data_queue.put(line)
 
 	def sendToServer(self, data):
-		#print 'Sending', data
+		#print('Sending', data)
 		self.sendLine(json.dumps(data))
 		self.player.outgoing_data_queue.get().addCallback(self.sendToServer)
 

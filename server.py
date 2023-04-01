@@ -37,12 +37,12 @@ class CommandConn(Protocol):
 		self.player = player
 
 	def connectionMade(self):
-		print 'Connection made to player', self.player
+		print('Connection made to player', self.player)
 		# Add callback
 		self.server.playersConnected += 1
 		self.server.conn_queue.get().addCallback(self.tellPlayerAboutConn)
 		if self.server.playersConnected == 2:
-			print 'Two connections made, sending data connections'
+			print('Two connections made, sending data connections')
 			# Create the two data connections
 			reactor.listenTCP(self.server.data_port_1, DataConnFactory(self.server, 1))
 			reactor.listenTCP(self.server.data_port_2, DataConnFactory(self.server, 2))
@@ -50,7 +50,7 @@ class CommandConn(Protocol):
 			self.server.conn_queue.put('Make data connection')
 
 	def connectionLost(self, reason):
-		print 'Command connection lost from player', self.player
+		print('Command connection lost from player', self.player)
 
 	def tellPlayerAboutConn(self, data):
 		self.transport.write(data)
@@ -72,10 +72,10 @@ class DataConn(LineReceiver):
 		self.player = 'p'+str(player)
 
 	def connectionMade(self):
-		print 'Data connection received from player', self.player
+		print('Data connection received from player', self.player)
 
 	def connectionLost(self, reason):
-		print 'Data connection lost from player', self.player
+		print('Data connection lost from player', self.player)
 
 	def lineReceived(self, line):
 		"""Data received back from player"""

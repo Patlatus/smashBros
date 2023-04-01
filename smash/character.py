@@ -159,20 +159,20 @@ class Character(pygame.sprite.Sprite):
 # ================= Attack functions ====================
 	def jump(self):
 		if self.jumpsRemaining > 0:
-			#print 'Jumping'
+			#print('Jumping')
 			self.yvel = -1 * self.jumpVelocity
 			self.ypos += self.yvel
 			self.jumpsRemaining -= 1
 
 	def Aattack(self):
 		pass
-		#print 'A attack'
+		#print('A attack')
 		#if self.Adelay == 0:
 	#		self.attack = Attack(self)
 	#		self.attack.show()
 
 	def Battack(self):
-		#print 'B attack'
+		#print('B attack')
 		newProjectile = Projectile(self.rect.center, self.isFacingLeft, self.playerName)
 		self.projectiles.append(newProjectile)
 		self.Bdelay = self.maxBdelay
@@ -251,7 +251,7 @@ class Character(pygame.sprite.Sprite):
 		""" Checks if a user is dead or not """
 		if not self.game.screenRect.contains(self.rect):
 			if self.lives > 0:
-				print 'Death'
+				print('Death')
 				self.lives -= 1
 				if not self.lives == 0:
 					self.resetCharacter()
